@@ -33,7 +33,6 @@ With Raspberry Pi OS Bookworm or later, the "enable camera" option in `raspi-con
 ```
 rpicam-hello
 ```
-<br><br>
 ## How it works?
 The video feed isn’t technically a live stream. Here's what happens: the camera captures raw frames, which are not natively web-compatible. Each frame is converted to MJPEG format and served in sequence through a browser. So you're actually watching a rapid slideshow of JPEGs, not a continuous video.
 
