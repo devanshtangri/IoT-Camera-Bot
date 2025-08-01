@@ -41,6 +41,7 @@ The video feed isn’t technically a live stream. Here's what happens: the camer
 
 The bot uses a night vision camera, but any standard Pi-compatible cam should work. I'm using an L298N motor driver to drive a 4WD chassis. Motors on the left and right sides are paired for control simplicity. Power comes from a 2S 18650 battery pack, providing 8.4V. Due to voltage drop (~2V) across the BJT-based L298N, a higher input voltage helps maintain motor speed. If you're prioritizing efficiency, consider switching to a MOSFET-based H-bridge. The Pi itself draws power from a separate 5V power bank module to keep things stable.
 
+## Youtube Video (Bot in Action)
 [![Watch the video](https://img.youtube.com/vi/E3UKFRwnvDQ/maxresdefault.jpg)](https://www.youtube.com/watch?v=E3UKFRwnvDQ)
 
 <br><br>
