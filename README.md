@@ -9,7 +9,7 @@ To ensure a smooth and steady video feed, I don't rely on the Pi's internal Wi-F
 <img src="Assets/Adapter.avif" width=400>
 
 The Raspberry Pi connects to my home Wi-Fi using the TP-Link adapter, not the built-in one. I initially used the desktop GUI to set it up, but later switched to CLI-only mode to improve performance by freeing up resources.
-
+<br><br>
 ## Dependencies
 With Raspberry Pi OS Bookworm or later, the "enable camera" option has been removed, so make sure you have a working camera that you can access via
 ```
@@ -28,12 +28,12 @@ python3-numpy \
 python3-gpiozero \
 python3-rpi.gpio
 ```
-
+<br><br>
 ## How it works
 The video feed isn’t technically a live stream. Here's what happens: the camera captures raw frames, which are not natively web-compatible. Each frame is converted to MJPEG format and served in sequence through a browser. So you're actually watching a rapid slideshow of JPEGs, not a continuous video.
 
 The bot uses a night vision camera, but any standard Pi-compatible cam should work. I'm using an L298N motor driver to drive a 4WD chassis. Motors on the left and right sides are paired for control simplicity. Power comes from a 2S 18650 battery pack, providing 8.4V. Due to voltage drop (~2V) across the BJT-based L298N, a higher input voltage helps maintain motor speed. If you're prioritizing efficiency, consider switching to a MOSFET-based H-bridge. The Pi itself draws power from a separate 5V power bank module to keep things stable.
-
+<br><br>
 ## Enabling script as a service to start at boot
 To make the project plug-and-play, I created a systemd service that automatically starts the main control script at boot. This way, the Pi is ready to go without needing SSH or manual intervention every time.
 
