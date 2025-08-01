@@ -8,8 +8,7 @@ from PIL import Image
 
 app = Flask(__name__)
 
-# Motor GPIO Pins
-# Please edit the pins according to your own wiring configuration
+# Motor GPIO Pins: adjust these BCM pin numbers according to your motor driver wiring
 
 motor_pins = [18, 23, 24, 25]
 GPIO.setmode(GPIO.BCM)
@@ -22,7 +21,7 @@ def generate_frames():
     picam2.configure(
         picam2.create_video_configuration(
             main={"size": (800, 600)},
-            transform=Transform(vflip=True, hflip=True) # You can change the vertical and horizontal flip in this line
+            transform=Transform(vflip=True, hflip=True) # You can change the vertical and horizontal flip in this line. Remove this line entirely if not needed or set the values as False
         )
     )
     picam2.start()
@@ -30,7 +29,7 @@ def generate_frames():
 
     try:
         while True:
-            frame = picam2.capture_array()
+            frame = picam2.capture_array() # Convert numpy array frame to JPEG format using PIL
             stream = io.BytesIO()
             Image.fromarray(frame).convert('RGB').save(stream, format='JPEG')
             stream.seek(0)
@@ -78,4 +77,4 @@ if __name__ == '__main__':
     try:
         app.run(host='0.0.0.0', port=80, debug=False) # Change port if you want
     finally:
-        GPIO.cleanup()
+        GPIO.cleanup() # Clean up GPIO pins on app exit
