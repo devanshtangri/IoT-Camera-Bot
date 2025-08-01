@@ -10,6 +10,25 @@ To ensure a smooth and steady video feed, I don't rely on the Pi's internal Wi-F
 
 The Raspberry Pi connects to my home Wi-Fi using the TP-Link adapter, not the built-in one. I initially used the desktop GUI to set it up, but later switched to CLI-only mode to improve performance by freeing up resources.
 
+## Dependencies
+With Raspberry Pi OS Bookworm or later, the "enable camera" option has been removed, so make sure you have a working camera that you can access via
+```
+rpicam-hello
+```
+
+Here are the packages required to run this script
+```
+sudo apt update && sudo apt install -y \
+python3 \
+python3-flask \
+python3-picamera2 \
+libcamera-dev \
+python3-pil \
+python3-numpy \
+python3-gpiozero \
+python3-rpi.gpio
+```
+
 ## Enabling script as a service to start at boot
 To make the project plug-and-play, I created a systemd service that automatically starts the main control script at boot. This way, the Pi is ready to go without needing SSH or manual intervention every time.
 
