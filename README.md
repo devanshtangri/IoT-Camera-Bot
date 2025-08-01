@@ -29,7 +29,7 @@ python3-numpy \
 python3-gpiozero \
 python3-rpi.gpio
 ```
-With Raspberry Pi OS Bookworm or later, the "enable camera" option has been removed, so make sure you have a working camera that you can access via
+With Raspberry Pi OS Bookworm or later, the "enable camera" option in `raspi-config` has been removed, so make sure you have a working camera that you can access via
 ```
 rpicam-hello
 ```
