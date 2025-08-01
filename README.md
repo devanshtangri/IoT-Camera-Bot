@@ -4,7 +4,7 @@ A DIY Raspberry Pi-powered robot car controlled through a web browser interface 
 ## Table of Contents
 - [About the project](#about-the-project)
 - [Dependencies](#dependencies)
-- [How it works](#how-it-works)
+- [How it works?](#how-it-works)
 - [Enable as a Service](#enabling-script-as-a-service-to-start-at-boot)
 <br><br>
 ## About the project
@@ -35,7 +35,7 @@ python3-gpiozero \
 python3-rpi.gpio
 ```
 <br><br>
-## How it works
+## How it works?
 The video feed isn’t technically a live stream. Here's what happens: the camera captures raw frames, which are not natively web-compatible. Each frame is converted to MJPEG format and served in sequence through a browser. So you're actually watching a rapid slideshow of JPEGs, not a continuous video.
 
 The bot uses a night vision camera, but any standard Pi-compatible cam should work. I'm using an L298N motor driver to drive a 4WD chassis. Motors on the left and right sides are paired for control simplicity. Power comes from a 2S 18650 battery pack, providing 8.4V. Due to voltage drop (~2V) across the BJT-based L298N, a higher input voltage helps maintain motor speed. If you're prioritizing efficiency, consider switching to a MOSFET-based H-bridge. The Pi itself draws power from a separate 5V power bank module to keep things stable.
