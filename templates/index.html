@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Control</title>
+    <style>
+        body { 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            background-color: black;
+            overflow: hidden;
+            position: relative; /* Enable positioning for child elements */
+        }
+        #video { 
+            max-width: 100vw; 
+            max-height: 100vh; 
+            width: auto; 
+            height: 100vh;
+        }
+        .controls {
+            position: absolute; /* Position controls relative to the body */
+        }
+        .bottom-left {
+            bottom: 20vh; /* Use viewport units for consistent placement */
+            left: 2vw;
+            display: flex;
+            flex-direction: column; /* Reverse the order of buttons */
+            align-items: center;
+        }
+        .bottom-right {
+            bottom: 20vh; /* Use viewport units for consistent placement */
+            right: 2vw;
+            display: flex;
+            flex-direction: row; /* Arrange buttons horizontally */
+            align-items: center;
+        }
+        button {
+            width: 120px;
+            height: 120px;
+            margin: 5px;
+            font-size: 16px;
+            background-color: #444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            user-select: none; /* Disable text selection */
+            transition: background-color 0.2s;
+        }
+        button:active,
+        button.pressed {
+            background-color: #666;
+        }
+    </style>
+</head>
+<body>
+    <img id="video" src="{{ url_for('video_feed') }}">
+
+    <div class="controls bottom-left">
+        <button id="forward">↑</button>
+        <button id="backward">↓</button>
+    </div>
+
+    <div class="controls bottom-right">
+        <button id="left">←</button>
+        <button id="right">→</button>
+    </div>
+
+    <script>
+        let keys = {};
+
+        // Keyboard listeners
+        document.addEventListener("keydown", function(event) {
+            if (!keys[event.key]) {
+                keys[event.key] = true;
+                sendKey(event.key, "down");
+            }
+        });
+
+        document.addEventListener("keyup", function(event) {
+            if (keys[event.key]) {
+                keys[event.key] = false;
+                sendKey(event.key, "up");
+            }
+        });
+
+        // Button listeners
+        const buttonMap = {
+            forward: "ArrowUp",
+            backward: "ArrowDown",
+            left: "ArrowLeft",
+            right: "ArrowRight"
+        };
+
+        Object.keys(buttonMap).forEach(buttonId => {
+            const button = document.getElementById(buttonId);
+            const key = buttonMap[buttonId];
+
+            // Mouse events
+            button.addEventListener("mousedown", () => {
+                if (!keys[key]) {
+                    keys[key] = true;
+                    sendKey(key, "down");
+                }
+            });
+
+            button.addEventListener("mouseup", () => {
+                if (keys[key]) {
+                    keys[key] = false;
+                    sendKey(key, "up");
+                }
+            });
+
+            button.addEventListener("mouseleave", () => {
+                if (keys[key]) {
+                    keys[key] = false;
+                    sendKey(key, "up");
+                }
+            });
+
+            // Touch events
+            button.addEventListener("touchstart", (e) => {
+                e.preventDefault(); // Prevent default touch behavior
+                button.classList.add("pressed"); // Add pressed class
+                if (!keys[key]) {
+                    keys[key] = true;
+                    sendKey(key, "down");
+                }
+            });
+
+            button.addEventListener("touchend", (e) => {
+                e.preventDefault(); // Prevent default touch behavior
+                button.classList.remove("pressed"); // Remove pressed class
+                if (keys[key]) {
+                    keys[key] = false;
+                    sendKey(key, "up");
+                }
+            });
+
+            button.addEventListener("touchcancel", (e) => {
+                e.preventDefault(); // Handle touch cancel events
+                button.classList.remove("pressed"); // Remove pressed class
+                if (keys[key]) {
+                    keys[key] = false;
+                    sendKey(key, "up");
+                }
+            });
+        });
+
+        function sendKey(key, action) {
+            console.log(`Sending key: ${key}, action: ${action}`); // Debugging log
+            fetch("/keypress", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `key=${key}&action=${action}`
+            }).catch(err => console.error("Error sending key:", err));
+        }
+    </script>
+</body>
+</html>
